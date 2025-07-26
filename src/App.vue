@@ -1,19 +1,23 @@
 <script setup>
-// 模板引用
-// 概念：通过ref标识获取真实的dom对象或者组件实例对象
-// 语法
-import { ref } from 'vue';
-// 1.调用ref函数生成一个ref对象
-const h2Ref = ref(null)
+import Center from './components/Center.vue';
+import { ref,provide } from 'vue';
+// provide和inject
+// 应用场景：顶层组件向任意的底层组件传递数据和方法，实现跨层组件通信
+// 1.顶层组件通过provide函数提供数据
+// 2.底层组件通过inject函数获取数据
 
-
+// 1.跨层级传递普通数据
+provide('data','我是顶层组件传递的数据')
+// 2.跨层级传递响应式数据
+const count = ref(100)
+provide('data1' , count)
+// 3.跨层级传递函数 可以让底层组件修改数据
+provide('changeCount',() => {
+  count.value++
+})
 </script>
 
 <template>
-  <!-- 2.通过ref标识绑定ref对象 -->
-  <h2 ref="h2Ref"></h2>
-  <div>
-    <input type="text">
-    <button>点击输入框聚焦</button>
-  </div>
+  <h2>我是顶层组件</h2>
+  <Center></Center>
 </template>
